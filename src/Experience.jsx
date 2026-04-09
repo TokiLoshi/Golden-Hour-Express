@@ -1,9 +1,12 @@
 import { useFrame } from "@react-three/fiber";
 import { useRef, useMemo } from "react";
-import vertexShader from "../src/shaders/vertex.glsl";
-import fragmentShader from "../src/shaders/fragment.glsl";
+import vertexShader from "../src/shaders/nebula/vertex.glsl";
+import fragmentShader from "../src/shaders/nebula/fragment.glsl";
 import * as THREE from "three";
 import { useControls } from "leva";
+
+console.log("Vertex: ", vertexShader);
+console.log("Fragment: ", fragmentShader);
 
 function Nebula() {
 	const pointsRef = useRef(null);
@@ -35,8 +38,8 @@ function Nebula() {
 			positions[i3 + 2] = radius * Math.cos(phi);
 
 			randoms[i] = Math.random();
-			return { positions, randoms };
 		}
+		return { positions, randoms };
 	}, [count, spread]);
 
 	const uniforms = useMemo(
@@ -56,7 +59,7 @@ function Nebula() {
 		const t = clock.getElapsedTime();
 		materialRef.current.uniforms.uTime.value = t;
 		materialRef.current.uniforms.uPointSize.value = pointSize;
-		materialRef.current.uniforms.uSpeed = speed;
+		materialRef.current.uniforms.uSpeed.value = speed;
 
 		pointsRef.current.rotation.y = t * 0.018;
 		pointsRef.current.rotation.x = Math.sin(t * 0.005) * 0.15;
@@ -95,8 +98,23 @@ function PlaceholderTrain() {
 			Math.sin(t * 1.2) * 0.05 + Math.sin(t * 2.7) * 0.02;
 
 		// Replace with camera movement
-		meshRef.current.position.z = Math.sin(t * 0.3) * 0.08;
+		trainRef.current.position.z = Math.sin(t * 0.3) * 0.08;
 	});
+
+	return (
+		<>
+			<mesh ref={trainRef} position={[0, 0, 0]}>
+				<boxGeometry args={[0.8, 0.5, 2.0]} />
+				<meshStandardMaterial
+					color='#f4a832'
+					emissive='#c4620a'
+					roughness={0.6}
+					metalness={0.3}
+				/>
+				<pointLight color='#fa832' intensity={3} distance={4} decay={2} />
+			</mesh>
+		</>
+	);
 }
 
 function Box() {
@@ -126,7 +144,10 @@ function Box() {
 export default function Experience() {
 	return (
 		<>
-			<Box />
+			{/* <Box /> */}
+			<Nebula />
+			<PlaceholderTrain />
+			<ambientLight intensity={0.05} color='#3a1a6e' />
 		</>
 	);
 }

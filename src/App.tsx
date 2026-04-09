@@ -9,7 +9,7 @@ export default function App() {
 	const { bgColor } = useControls(
 		"SceneControls",
 		{
-			bgColor: "#b1995d",
+			bgColor: "#0a0612",
 		},
 		{ collapsed: true },
 	);
@@ -22,11 +22,15 @@ export default function App() {
 					toneMapping: ACESFilmicToneMapping,
 				}}
 				flat
-				camera={{ position: [5, 3, 3], fov: 75 }}
+				// camera={{ position: [5, 3, 3], fov: 75 }}
+				camera={{ position: [0, 0, 6], fov: 75 }}
 				shadows>
 				<ambientLight intensity={0.1} />
 				<color attach='background' args={[bgColor]} />
-				<OrbitControls />
+				<OrbitControls
+				// enableZoom={false}
+				// enablePan={false}
+				/>
 				<directionalLight color='red' position={[0, 0, 5]} />
 				<Experience />
 			</Canvas>
