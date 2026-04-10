@@ -4,11 +4,9 @@ import vertexShader from "../src/shaders/nebula/vertex.glsl";
 import fragmentShader from "../src/shaders/nebula/fragment.glsl";
 import * as THREE from "three";
 import { useControls } from "leva";
+import { useAudio } from "./useAudio";
 
-console.log("Vertex: ", vertexShader);
-console.log("Fragment: ", fragmentShader);
-
-function Nebula() {
+function Nebula({ audioData, update }) {
 	const pointsRef = useRef(null);
 	const materialRef = useRef(null);
 
@@ -57,9 +55,16 @@ function Nebula() {
 
 	useFrame(({ clock }) => {
 		const t = clock.getElapsedTime();
+		// refresh audio data
+
+		update();
 		materialRef.current.uniforms.uTime.value = t;
 		materialRef.current.uniforms.uPointSize.value = pointSize;
 		materialRef.current.uniforms.uSpeed.value = speed;
+
+		materialRef.current.uniforms.uBass.value = audioData.current.bass;
+		materialRef.current.uniforms.uMid.value = audioData.current.mid;
+		materialRef.current.uniforms.uTreble.value = audioData.current.treble;
 
 		pointsRef.current.rotation.y = t * 0.018;
 		pointsRef.current.rotation.x = Math.sin(t * 0.005) * 0.15;
@@ -141,11 +146,14 @@ function Box() {
 	);
 }
 
-export default function Experience() {
+export default function Experience({ audioData, update }) {
+	const { audioData, connect, update } = useAudio();
+	const audioRef = useRef(null);
+
 	return (
 		<>
 			{/* <Box /> */}
-			<Nebula />
+			<Nebula audioData={audioData} update={update} />
 			<PlaceholderTrain />
 			<ambientLight intensity={0.05} color='#3a1a6e' />
 		</>
