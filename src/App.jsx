@@ -16,8 +16,8 @@ export default function App() {
 		{ collapsed: true },
 	);
 
-	const audioRef = useRef < HTMLAudioElement > null;
-	const { audioData, connect, update } = useAudio();
+	const audioRef = useRef(null);
+	const { audioRef: audioData, connectElement: connect, update } = useAudio();
 
 	return (
 		<>

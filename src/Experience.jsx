@@ -4,7 +4,6 @@ import vertexShader from "../src/shaders/nebula/vertex.glsl";
 import fragmentShader from "../src/shaders/nebula/fragment.glsl";
 import * as THREE from "three";
 import { useControls } from "leva";
-import { useAudio } from "./useAudio";
 
 function Nebula({ audioData, update }) {
 	const pointsRef = useRef(null);
@@ -147,9 +146,6 @@ function Box() {
 }
 
 export default function Experience({ audioData, update }) {
-	const { audioData, connect, update } = useAudio();
-	const audioRef = useRef(null);
-
 	return (
 		<>
 			{/* <Box /> */}
