@@ -4,6 +4,7 @@ import vertexShader from "../src/shaders/nebula/vertex.glsl";
 import fragmentShader from "../src/shaders/nebula/fragment.glsl";
 import * as THREE from "three";
 import { useControls } from "leva";
+import { useGLTF } from "@react-three/drei";
 
 function Nebula({ audioData, update }) {
 	const pointsRef = useRef(null);
@@ -89,6 +90,35 @@ function Nebula({ audioData, update }) {
 	);
 }
 
+function Train() {
+	const { scene } = useGLTF(
+		"/models/train/spirited_away_train_fanart/scene.gltf",
+	);
+	const { posX, posY, posZ, rotX, rotY, rotZ, scale } = useControls(
+		"train",
+		{
+			posX: { value: 0, max: 10, min: -10, step: 0.1 },
+			posY: { value: -0.8, max: 10, min: -10, step: 0.1 },
+			posZ: { value: 0, max: 10, min: -10, step: 0.1 },
+			rotX: { value: 0, max: 10, min: -10, step: 0.1 },
+			rotY: { value: -3, max: 10, min: -10, step: 0.1 },
+			rotZ: { value: 0, max: 10, min: -10, step: 0.1 },
+			scale: { value: 0.1, max: 1, min: 0.01, step: 0.01 },
+		},
+		{ collapsed: true },
+	);
+	return (
+		<>
+			<primitive
+				object={scene}
+				scale={scale}
+				position={[posX, posY, posZ]}
+				rotation={[rotX, rotY, rotZ]}
+			/>
+		</>
+	);
+}
+
 function PlaceholderTrain() {
 	const trainRef = useRef();
 
@@ -150,7 +180,8 @@ export default function Experience({ audioData, update }) {
 		<>
 			{/* <Box /> */}
 			<Nebula audioData={audioData} update={update} />
-			<PlaceholderTrain />
+			{/* <PlaceholderTrain /> */}
+			<Train />
 			<ambientLight intensity={0.05} color='#3a1a6e' />
 		</>
 	);

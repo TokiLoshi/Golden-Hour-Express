@@ -51,7 +51,8 @@ export function useAudio() {
 		const avg = (start: number, end: number) => {
 			let sum = 0;
 			for (let i = start; i < end; i++) sum += data[i];
-			return sum / ((end - start) * 255); // normalize
+			const defaultVolume = 0.6;
+			return (sum / ((end - start) * 255)) * defaultVolume; // normalize
 		};
 
 		audioRef.current.bass = avg(0, 10);

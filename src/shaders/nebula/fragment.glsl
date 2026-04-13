@@ -8,7 +8,6 @@ varying float vDistance;
 
 void main() {
   float distToCenter = distance(gl_PointCoord, vec2(0.5));
-  if (distToCenter > 0.5) discard; 
 
   float strength = 1.0 - smoothstep(0.0, 0.5, distToCenter); 
   strength = pow(strength, 2.0); 
@@ -37,7 +36,6 @@ void main() {
   color += uMid * 0.15;
 
   float alpha = strength * (0.6 + 0.4 * (1.0 - vDistance));
-  alpha = clamp(alpha, 0.0, 1.0);
 
   gl_FragColor = vec4(color, alpha); 
 }

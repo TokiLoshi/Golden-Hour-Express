@@ -2,16 +2,30 @@ import "./App.css";
 import { Canvas } from "@react-three/fiber";
 import { Leva, useControls } from "leva";
 import Experience from "./Experience";
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, PresentationControls } from "@react-three/drei";
 import { ACESFilmicToneMapping } from "three";
 import { useRef } from "react";
 import { useAudio } from "./useAudio";
 
 export default function App() {
-	const { bgColor } = useControls(
+	const { bgColor, minAzimuth, maxAzimuth, minPolar, maxPolar } = useControls(
 		"SceneControls",
 		{
 			bgColor: "#0a0612",
+			minAzimuth: {
+				value: -Math.PI / 6,
+				max: Infinity,
+				min: -Infinity,
+				step: 1,
+			},
+			maxAzimuth: {
+				value: Math.PI / 6,
+				max: Infinity,
+				min: -Infinity,
+				step: 0.1,
+			},
+			minPolar: { value: Math.PI / 2 - 0.3, max: 10, min: 0, step: 0.01 },
+			maxPolar: { value: Math.PI / 2 + 0.3, max: 10, min: -10, step: 0.01 },
 		},
 		{ collapsed: true },
 	);
@@ -40,8 +54,10 @@ export default function App() {
 				<ambientLight intensity={0.1} />
 				<color attach='background' args={[bgColor]} />
 				<OrbitControls
-				// enableZoom={false}
-				// enablePan={false}
+					polar={[minPolar, maxPolar]}
+					azimuthX={[minAzimuth, maxAzimuth]}
+					// enableZoom={false}
+					// enablePan={false}
 				/>
 				<directionalLight color='red' position={[0, 0, 5]} />
 				<Experience audioData={audioData} update={update} />
