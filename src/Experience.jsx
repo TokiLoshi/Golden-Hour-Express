@@ -92,7 +92,7 @@ function Nebula({ audioData, update }) {
 
 function Train() {
 	const { scene } = useGLTF(
-		"/models/train/spirited_away_train_fanart/scene.gltf",
+		"/models/train/spirited_away_train_fanart/spiritedTrainHalf.glb",
 	);
 	const { posX, posY, posZ, rotX, rotY, rotZ, scale } = useControls(
 		"train",
