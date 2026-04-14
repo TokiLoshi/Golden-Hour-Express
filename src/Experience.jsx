@@ -94,14 +94,22 @@ function Train() {
 	const { scene } = useGLTF(
 		"/models/train/spirited_away_train_fanart/spiritedTrainHalf.glb",
 	);
+
+	useMemo(() => {
+		scene.traverse((child) => {
+			if (child.mesh) {
+				child.material.side = THREE.DoubleSide;
+			}
+		});
+	}, [scene]);
 	const { posX, posY, posZ, rotX, rotY, rotZ, scale } = useControls(
 		"train",
 		{
 			posX: { value: 0, max: 10, min: -10, step: 0.1 },
-			posY: { value: -0.8, max: 10, min: -10, step: 0.1 },
-			posZ: { value: 0, max: 10, min: -10, step: 0.1 },
+			posY: { value: -0.4, max: 10, min: -10, step: 0.1 },
+			posZ: { value: 3.6, max: 10, min: -10, step: 0.1 },
 			rotX: { value: 0, max: 10, min: -10, step: 0.1 },
-			rotY: { value: -3, max: 10, min: -10, step: 0.1 },
+			rotY: { value: 0.1, max: 10, min: -10, step: 0.1 },
 			rotZ: { value: 0, max: 10, min: -10, step: 0.1 },
 			scale: { value: 0.1, max: 1, min: 0.01, step: 0.01 },
 		},
@@ -151,38 +159,27 @@ function PlaceholderTrain() {
 	);
 }
 
-function Box() {
-	const boxRef = useRef();
-	const materialRef = useRef();
-	useFrame(({ clock }) => {
-		const time = clock.getElapsedTime();
-		boxRef.current.rotation.x = time * 0.5;
-		boxRef.current.rotation.y = time * (Math.PI / 2) * 0.5;
-	});
-	return (
-		<mesh ref={boxRef}>
-			<boxGeometry />
-			<shaderMaterial
-				ref={materialRef}
-				vertexShader={vertexShader}
-				fragmentShader={fragmentShader}
-				uniforms={{
-					uTime: { value: 0 },
-				}}
-				side={THREE.DoubleSide}
-			/>
-		</mesh>
-	);
-}
-
 export default function Experience({ audioData, update }) {
 	return (
 		<>
-			{/* <Box /> */}
 			<Nebula audioData={audioData} update={update} />
 			{/* <PlaceholderTrain /> */}
 			<Train />
-			<ambientLight intensity={0.05} color='#3a1a6e' />
+			<ambientLight intensity={0.15} color='#1a0a2e' />
+			<pointLight
+				color='#f3a832'
+				intensity={4}
+				distance={8}
+				decay={2}
+				position={[0, 0.2, 3.6]}
+			/>
+			<pointLight
+				color='#f4a832'
+				intensity={50}
+				distance={80}
+				decay={2}
+				position={[0, 3, 0]}
+			/>
 		</>
 	);
 }

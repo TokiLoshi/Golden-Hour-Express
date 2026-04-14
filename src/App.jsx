@@ -59,7 +59,7 @@ export default function App() {
 					// enableZoom={false}
 					// enablePan={false}
 				/>
-				<directionalLight color='red' position={[0, 0, 5]} />
+
 				<Experience audioData={audioData} update={update} />
 			</Canvas>
 		</>
