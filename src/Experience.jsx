@@ -1,5 +1,5 @@
 import { useFrame } from "@react-three/fiber";
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useLayoutEffect } from "react";
 import vertexShader from "../src/shaders/nebula/vertex.glsl";
 import fragmentShader from "../src/shaders/nebula/fragment.glsl";
 import * as THREE from "three";
@@ -91,14 +91,33 @@ function Nebula({ audioData, update }) {
 }
 
 function Train() {
+	// const { scene } = useGLTF(
+	// 	"/models/train/spirited_away_train_fanart/spiritedTrainHalf.glb",
+	// );
 	const { scene } = useGLTF(
-		"/models/train/spirited_away_train_fanart/spiritedTrainHalf.glb",
+		"/models/train/spirited_away_train_fanart/spiritedTrainHalfMessing.glb",
 	);
+	// const { scene } = useGLTF(
+	// 	"/models/train/spirited_away_train_fanart/scene.gltf",
+	// );
+	// useLayoutEffect(() => {
+	// 	scene.traverse((obj) => {
+	// 		if (obj.isMesh) {
+	// 			obj.material.transparent = false;
+	// 			obj.material.side = THREE.DoubleSide;
+	// 			obj.material.opacity = 1;
+	// 		}
+	// 	});
+	// }, [scene]);
 
 	useMemo(() => {
 		scene.traverse((child) => {
 			if (child.mesh) {
 				child.material.side = THREE.DoubleSide;
+				child.material.transparent = false;
+				child.material.opacity = 1;
+				child.material.alphaTest = 0;
+				child.material.depthWrite = true;
 			}
 		});
 	}, [scene]);
