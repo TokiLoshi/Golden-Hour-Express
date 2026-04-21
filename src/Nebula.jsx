@@ -80,7 +80,7 @@ export default function Nebula({ audioData, update }) {
 			const phi = Math.acos(2 * Math.random() - 1);
 
 			positions[i3 + 0] = radius * Math.sin(phi) * Math.cos(theta);
-			positions[i3 + 1] = radius * Math.sin(phi) + Math.sin(theta);
+			positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
 			positions[i3 + 2] = radius * Math.cos(phi);
 
 			randoms[i] = Math.random();
@@ -97,6 +97,19 @@ export default function Nebula({ audioData, update }) {
 			uBass: { value: 0.0 },
 			uMid: { value: 0.0 },
 			uTreble: { value: 0.0 },
+			// Shape
+			uSwirl: { value: swirl },
+			uDrift: { value: drift },
+			uTrebleShake: { value: trebleShake },
+			// Colors
+			uWarmInner: { value: new THREE.Color(warmInner) },
+			uWarmOuter: { value: new THREE.Color(warmOuter) },
+			uCoolInner: { value: new THREE.Color(coolInner) },
+			uCoolOuter: { value: new THREE.Color(coolOuter) },
+			// Look
+			uSoftness: { value: softness },
+			uShimmerAmount: { value: shimmerAmount },
+			uWarmthFalloff: { value: warmthFalloff },
 		}),
 		[],
 	);
@@ -106,13 +119,31 @@ export default function Nebula({ audioData, update }) {
 		// refresh audio data
 
 		update();
-		materialRef.current.uniforms.uTime.value = t;
-		materialRef.current.uniforms.uPointSize.value = pointSize;
-		materialRef.current.uniforms.uSpeed.value = speed;
+		const u = materialRef.current.uniforms;
+		u.uTime.value = t;
+		u.uPointSize.value = pointSize;
+		u.uSpeed.value = speed;
 
-		materialRef.current.uniforms.uBass.value = audioData.current.bass;
-		materialRef.current.uniforms.uMid.value = audioData.current.mid;
-		materialRef.current.uniforms.uTreble.value = audioData.current.treble;
+		// Shape
+		u.uSwirl.value = swirl;
+		u.uDrift.value = drift;
+		u.uTrebleShake.value = trebleShake;
+
+		// Colors
+		u.uWarmInner.value.set(warmInner);
+		u.uWarmOuter.value.set(warmOuter);
+		u.uCoolInner.value.set(coolInner);
+		u.uCoolOuter.value.set(coolOuter);
+
+		// Look
+		u.uSoftness.value = softness;
+		u.uShimmerAmount.value = shimmerAmount;
+		u.uWarmthFalloff.value = warmthFalloff;
+
+		// Audio
+		u.uBass.value = audioData.current.bass;
+		u.uMid.value = audioData.current.mid;
+		u.uTreble.value = audioData.current.treble;
 
 		pointsRef.current.rotation.y = t * 0.018;
 		pointsRef.current.rotation.x = Math.sin(t * 0.005) * 0.15;
