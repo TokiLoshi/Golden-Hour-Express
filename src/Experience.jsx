@@ -8,6 +8,8 @@ import { useGLTF } from "@react-three/drei";
 import Nebula from "./Nebula";
 import Train from "./Train";
 import { Bloom, EffectComposer, GodRays } from "@react-three/postprocessing";
+import WarpField from "./WarpField";
+import { BlendFunction, KernelSize, Resizer } from "postprocessing";
 
 export default function Experience({ audioData, update }) {
 	const sunRef = useRef();
@@ -21,7 +23,8 @@ export default function Experience({ audioData, update }) {
 		<>
 			<Nebula audioData={audioData} update={update} />
 			{/* <PlaceholderTrain /> */}
-			<Train />
+			<WarpField audioData={audioData} />
+			<Train ref={sunRef} />
 			<ambientLight intensity={0.15} color='#1a0a2e' />
 			<pointLight
 				color='#f3a832'
@@ -49,7 +52,7 @@ export default function Experience({ audioData, update }) {
 						exposure={0.55}
 						width={Resizer.AUTO_SIZE}
 						heihg={Resizer.AUTO_SIZE}
-						kernelSize={KernalSize.SMALL}
+						kernelSize={KernelSize.SMALL}
 						blur
 					/>
 					<Bloom
