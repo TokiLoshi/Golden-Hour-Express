@@ -52,7 +52,7 @@ export default function IntroOverlay() {
 						}}>
 						Sometimes life feels like you're hurtling through space, unsure of
 						the destination - but you keep going through it, and it's more fun
-						when you can dance to the music
+						when you can dance to the music.
 					</p>
 					<p
 						style={{
