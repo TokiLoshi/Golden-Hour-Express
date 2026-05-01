@@ -55,9 +55,28 @@ export function useAudio() {
 			return (sum / ((end - start) * 255)) * defaultVolume; // normalize
 		};
 
-		audioRef.current.bass = avg(0, 10);
-		audioRef.current.mid = avg(10, 80);
-		audioRef.current.treble = avg(80, 128);
+		const rawBass = avg(0, 10);
+		const rawMid = avg(10, 80);
+		const rawTreble = avg(80, 128);
+
+		const smooth = (
+			current: number,
+			target: number,
+			attack: number,
+			release: number,
+		) => {
+			const rate = target > current ? attack : release;
+			return current + (target - current) * rate;
+		};
+
+		audioRef.current.bass = smooth(audioRef.current.bass, rawBass, 0.12, 0.04);
+		audioRef.current.mid = smooth(audioRef.current.mid, rawMid, 0.18, 0.08);
+		audioRef.current.treble = smooth(
+			audioRef.current.treble,
+			rawTreble,
+			0.3,
+			0.15,
+		);
 	}, []);
 
 	return { audioRef, connectElement, update };

@@ -2,10 +2,11 @@ import "./App.css";
 import { Canvas } from "@react-three/fiber";
 import { Leva, useControls } from "leva";
 import Experience from "./Experience";
-import { OrbitControls, PresentationControls } from "@react-three/drei";
+import { Loader, OrbitControls, PresentationControls } from "@react-three/drei";
 import { ACESFilmicToneMapping } from "three";
-import { useRef } from "react";
+import { Suspense, useRef } from "react";
 import { useAudio } from "./useAudio";
+import IntroOverlay from "./IntroOverlay";
 
 export default function App() {
 	const { bgColor, minAzimuth, maxAzimuth, minPolar, maxPolar } = useControls(
@@ -43,6 +44,7 @@ export default function App() {
 				controls
 				style={{ position: "fixed", bottom: 20, left: 20, zIndex: 100 }}
 			/>
+			<IntroOverlay />
 			<Canvas
 				gl={{
 					toneMapping: ACESFilmicToneMapping,
@@ -59,9 +61,11 @@ export default function App() {
 					// enableZoom={false}
 					// enablePan={false}
 				/>
-
-				<Experience audioData={audioData} update={update} />
+				<Suspense>
+					<Experience audioData={audioData} update={update} />
+				</Suspense>
 			</Canvas>
+			<Loader />
 		</>
 	);
 }
