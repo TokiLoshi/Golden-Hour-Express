@@ -5,9 +5,6 @@ uniform float uTunnelDepth;
 uniform float uStreakLength; 
 uniform float uNearSize; 
 uniform float uFarSize; 
-uniform float uBass; 
-uniform float uTreble; 
-uniform float uBassBoost; 
 
 attribute vec3 aLane; 
 
@@ -25,8 +22,7 @@ void main() {
   pos.x = cos(angle) * r; 
   pos.y = sin(angle) * r; 
 
-  float boostedSpeed = uSpeed * (1.0 + uBass * uBassBoost);
-  float travel = phase * uTunnelDepth + uTime * boostedSpeed; 
+  float travel = phase * uTunnelDepth + uTime * uSpeed; 
 
   float z = mod(travel, uTunnelDepth) - uTunnelDepth * 0.5; 
   pos.z = z; 

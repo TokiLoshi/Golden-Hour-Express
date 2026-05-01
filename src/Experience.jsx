@@ -23,7 +23,7 @@ export default function Experience({ audioData, update }) {
 		<>
 			<Nebula audioData={audioData} update={update} />
 			{/* <PlaceholderTrain /> */}
-			<WarpField audioData={audioData} />
+			<WarpField />
 			<Train ref={sunRef} />
 			<ambientLight intensity={0.15} color='#1a0a2e' />
 			<pointLight

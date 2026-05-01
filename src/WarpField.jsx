@@ -5,7 +5,7 @@ import * as THREE from "three";
 import warpVertex from "../src/shaders/warp/vertex.glsl";
 import warpFragment from "../src/shaders/warp/fragment.glsl";
 
-export default function WarpField({ audioData }) {
+export default function WarpField() {
 	const pointsRef = useRef(null);
 	const materialRef = useRef(null);
 
@@ -19,8 +19,6 @@ export default function WarpField({ audioData }) {
 		farSize,
 		coreColor,
 		glowColor,
-		bassBoost,
-		trebleFlicker,
 	} = useControls(
 		"WarpField",
 		{
@@ -33,8 +31,6 @@ export default function WarpField({ audioData }) {
 			farSize: { value: 0.5, min: 0.1, max: 4, step: 0.1 },
 			coreColor: { value: "#fff4d6" },
 			glowColor: { value: "#ffb347" },
-			bassBoost: { value: 1.4, min: 0, max: 4, step: 0.05 },
-			trebleFlicker: { value: 0.5, min: 0, max: 2, step: 0.05 },
 		},
 		{ collapsed: true },
 	);
@@ -60,53 +56,6 @@ export default function WarpField({ audioData }) {
 		return { positions, attribs };
 	}, [count]);
 
-	// const uniforms = useMemo(() => {
-	// 	uTime: {
-	// 		value: 0;
-	// 	}
-	// 	uSpeed: {
-	// 		value: speed;
-	// 	}
-	// 	uRadius: {
-	// 		value: radius;
-	// 	}
-	// 	uTunnelDepth: {
-	// 		value: tunnelDepth;
-	// 	}
-	// 	uStreakLength: {
-	// 		value: streakLength;
-	// 	}
-	// 	uNearSize: {
-	// 		value: nearSize;
-	// 	}
-	// 	uFarSize: {
-	// 		value: farSize;
-	// 	}
-	// 	uCoreColor: {
-	// 		value: new THREE.Color(
-	// 			coreColor.startsWith("#") ? coreColor : `#${coreColor}`,
-	// 		);
-	// 	}
-	// 	uGlowColor: {
-	// 		value: new THREE.Color(
-	// 			glowColor.startsWith("#" ? glowColor : `#${glowColor}`),
-	// 		);
-	// 	}
-	// 	uBass: {
-	// 		value: 0;
-	// 	}
-	// 	uTreble: {
-	// 		value: 0;
-	// 	}
-	// 	uBassBoost: {
-	// 		value: bassBoost;
-	// 	}
-	// 	uTrebleFlicker: {
-	// 		value: trebleFlicker;
-	// 	}
-	// 	return uniforms;
-	// }, []);
-
 	const uniforms = useMemo(
 		() => ({
 			uTime: { value: 0 },
@@ -126,10 +75,6 @@ export default function WarpField({ audioData }) {
 					glowColor.startsWith("#" ? glowColor : `#${glowColor}`),
 				),
 			},
-			uBass: { value: 0 },
-			uTreble: { value: 0 },
-			uBassBoost: { value: bassBoost },
-			uTrebleFlicker: { value: trebleFlicker },
 		}),
 		[], // eslint-disable-line react-hooks/exhaustive-deps
 	);
@@ -150,10 +95,6 @@ export default function WarpField({ audioData }) {
 		u.uGlowColor.value.set(
 			glowColor.startsWith("#" ? glowColor : `#${glowColor}`),
 		);
-		u.uBassBoost.value = bassBoost;
-		u.uTrebleFlicker.value = trebleFlicker;
-		u.uBass.value = audioData.current.bass;
-		u.uTreble.value = audioData.current.treble;
 	});
 
 	return (
