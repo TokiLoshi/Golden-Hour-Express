@@ -56,8 +56,8 @@ export default function Experience({ audioData, update }) {
 						blur
 					/>
 					{/* <Bloom
-						intensity={0.45}
-						luminanceThreshold={0.6}
+						intensity={0.15}
+						luminanceThreshold={0.2}
 						luminanceSmoothing={0.2}
 						mipmapBlur
 					/> */}
