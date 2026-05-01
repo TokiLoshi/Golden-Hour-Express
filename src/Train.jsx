@@ -1,10 +1,10 @@
 import { useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useControls } from "leva";
-import { useLayoutEffect, useRef } from "react";
+import { forwardRef, useLayoutEffect, useRef } from "react";
 import * as THREE from "three";
 
-export default function Train() {
+const Train = forwardRef(function Train(_, sunRef) {
 	// const { scene } = useGLTF(
 	// 	"/models/train/spirited_away_train_fanart/spiritedTrainHalf.glb",
 	// );
@@ -38,6 +38,10 @@ export default function Train() {
 		bobSpeed,
 		bobHeight,
 		swayAmount,
+		sunOffsetX,
+		sunOffsetY,
+		sunOffsetZ,
+		sunSize,
 	} = useControls(
 		"train",
 		{
@@ -63,6 +67,10 @@ export default function Train() {
 				step: 0.005,
 				label: "swayAmount",
 			},
+			sunOffsetX: { value: 1.6, max: 10, min: -10, step: 0.1 },
+			sunOffsetY: { value: 1.6, max: 10, min: -20, step: 0.1 },
+			sunOffsetZ: { value: 0, max: 4, min: -2, step: 0.05 },
+			sunSize: { value: 0.18, min: 0.05, max: 1, step: 0.01 },
 		},
 		{ collapsed: true },
 	);
@@ -72,7 +80,8 @@ export default function Train() {
 		const group = trainRef.current;
 
 		group.position.y =
-			posY * Math.sin(t * bobSpeed) * bobHeight +
+			posY +
+			Math.sin(t * bobSpeed) * bobHeight +
 			Math.sin(t * bobSpeed * 1.7) * bobHeight * 0.3;
 
 		group.rotation.z = rotZ + Math.sin(t * bobSpeed * 0.9) * swayAmount;
@@ -86,7 +95,13 @@ export default function Train() {
 				position={[posX, posY, posZ]}
 				rotation={[rotX, rotY, rotZ]}>
 				<primitive object={scene} scale={scale} />
+				<mesh ref={sunRef} position={[sunOffsetX, sunOffsetY, sunOffsetZ]}>
+					<sphereGeometry args={[sunSize, 24, 24]} />
+					<meshBasicMaterial color='#ffd591' toneMapped={false} />
+				</mesh>
 			</group>
 		</>
 	);
-}
+});
+
+export default Train;
