@@ -8,12 +8,13 @@ const Train = forwardRef(function Train(_, sunRef) {
 	// const { scene } = useGLTF(
 	// 	"/models/train/spirited_away_train_fanart/spiritedTrainHalf.glb",
 	// );
-	const { scene } = useGLTF(
-		"/models/train/spirited_away_train_fanart/spiritedTrainHalfMessing.glb",
-	);
+	// const { scene } = useGLTF(
+	// 	"/models/train/spirited_away_train_fanart/spiritedTrainHalfMessing.glb",
+	// );
 	// const { scene } = useGLTF(
 	// 	"/models/train/spirited_away_train_fanart/scene.gltf",
 	// );
+	const { scene } = useGLTF("/models/train/spiritedglass.glb");
 	const trainRef = useRef();
 
 	useLayoutEffect(() => {
