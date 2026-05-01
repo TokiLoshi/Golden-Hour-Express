@@ -38,6 +38,8 @@ const Train = forwardRef(function Train(_, sunRef) {
 		bobSpeed,
 		bobHeight,
 		swayAmount,
+		sunOffsetX,
+		sunOffsetY,
 		sunOffsetZ,
 		sunSize,
 	} = useControls(
@@ -65,7 +67,9 @@ const Train = forwardRef(function Train(_, sunRef) {
 				step: 0.005,
 				label: "swayAmount",
 			},
-			sunOffsetZ: { value: 0.6, max: 4, min: -2, step: 0.05 },
+			sunOffsetX: { value: 1.6, max: 10, min: -10, step: 0.1 },
+			sunOffsetY: { value: 1.6, max: 10, min: -20, step: 0.1 },
+			sunOffsetZ: { value: 0, max: 4, min: -2, step: 0.05 },
 			sunSize: { value: 0.18, min: 0.05, max: 1, step: 0.01 },
 		},
 		{ collapsed: true },
@@ -91,7 +95,7 @@ const Train = forwardRef(function Train(_, sunRef) {
 				position={[posX, posY, posZ]}
 				rotation={[rotX, rotY, rotZ]}>
 				<primitive object={scene} scale={scale} />
-				<mesh ref={sunRef} position={[0, 0.2, sunOffsetZ]}>
+				<mesh ref={sunRef} position={[sunOffsetX, sunOffsetY, sunOffsetZ]}>
 					<sphereGeometry args={[sunSize, 24, 24]} />
 					<meshBasicMaterial color='#ffd591' toneMapped={false} />
 				</mesh>
